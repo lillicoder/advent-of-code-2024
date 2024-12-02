@@ -19,3 +19,4 @@ plugins {
 }
 
 include(":day1")
+include(":day2")
