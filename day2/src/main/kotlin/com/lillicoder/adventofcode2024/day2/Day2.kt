@@ -7,63 +7,77 @@ fun main() {
     val input =
         day2.javaClass.classLoader.getResourceAsStream("input.txt").use {
             it?.reader()?.readText()
-        }?.lines() ?: throw IllegalArgumentException("Could not read input.")
+        } ?: throw IllegalArgumentException("Could not read input.")
     println("The number of safe reports is ${day2.part1(input)}.")
     println("The number of safe reports with dampening is ${day2.part2(input)}.")
 }
 
 class Day2 {
-    fun part1(lines: List<String>): Long {
-        val digits =
-            lines.map { line ->
-                line.split(" ").filter { it.isNotEmpty() }.map { it.toLong() }
+    fun part1(input: String): Long {
+        val reports =
+            input.lines().map {
+                it.toNumbers()
             }
-        return digits.count { isValidReport(it) }.toLong()
-    }
-
-    fun part2(lines: List<String>): Long {
-        val digits =
-            lines.map { line ->
-                line.split(" ").filter { it.isNotEmpty() }.map { it.toLong() }
-            }
-        return digits.count {
-            val isValid = isValidReportWithDampening(it)
-            if (!isValid) {
-                println("Found invalid report. [report=$it]")
-            }
-
-            isValid
+        return reports.count {
+            it.isValidReport()
         }.toLong()
     }
 
-    private fun isValidReport(report: List<Long>): Boolean {
-        // Digits need to be sorted (either low -> high or high -> low) and have a diff of 0 < x < 4
-        val isLowHigh = report[0] <= report[1]
-        report.windowed(2, 1).forEach { pair ->
-            val (first, second) = pair
-            val inOrder = if (isLowHigh) first <= second else second < first
-            val inRange = abs(first - second) in 1..3
-            if (!inOrder || !inRange) return false
-        }
-        return true
-    }
-
-    private fun isValidReportWithDampening(report: List<Long>): Boolean {
-        // Let's make the sublists
-        val sublists = mutableListOf(report)
-        report.forEachIndexed { index, digit ->
-            val sub = report.toMutableList().apply { removeAt(index) }
-            sublists.add(sub)
-        }
-
-        // Dampening allows a report to be valid if a single element being removed
-        // makes the report valid by the usual rules
-        val validSub =
-            sublists.any {
-                // This can end up removing the wrong digit, needs to remove the one
-                // at the exact index
-                isValidReport(it)
+    fun part2(input: String): Long {
+        val reports =
+            input.lines().map {
+                it.toNumbers()
             }
-        return validSub || isValidReport(report)
+        return reports.count {
+            it.isValidReport(shouldDampen = true)
+        }.toLong()
     }
+
+    /**
+     * Combines this list with a list of all sub-lists where
+     * a single element has been removed.
+     * @return Dampened lists.
+     */
+    private fun List<Long>.dampen() =
+        List(size + 1) {
+            when (it) {
+                size + 1 -> this // Last element should be the original list
+                else -> filterIndexed { index, _ -> it != index } // Filter out element at this index
+            }
+        }
+
+    /**
+     * Determines if these numbers represent safe levels for a report.
+     * @return True if these levels are safe, false otherwise.
+     */
+    private fun List<Long>.areSafeLevels(): Boolean {
+        if (size <= 1) throw IllegalArgumentException("Cannot determine safety for levels with less than 2 numbers.")
+
+        // Numbers need to be sorted (either low -> high or high -> low)
+        // and have a diff between 0 and 4
+        val isLowHigh = get(0) <= get(1)
+        return windowed(2, 1).all { pair ->
+            val (first, second) = pair
+            when (isLowHigh) { // order check
+                true -> first <= second
+                false -> second < first
+            } && abs(first - second) in 1..3 // range check
+        }
+    }
+
+    /**
+     * Determines if these numbers represent a valid report.
+     * @param shouldDampen True to allow dampening, false otherwise.
+     * @return True if this report is valid, false otherwise.
+     */
+    private fun List<Long>.isValidReport(shouldDampen: Boolean = false): Boolean {
+        val reports = if (shouldDampen) dampen() else listOf(this)
+        return reports.any { it.areSafeLevels() }
+    }
+
+    /**
+     * Converts this string of numbers separated by spaces into a list of numbers.
+     * @return List of numbers.
+     */
+    private fun String.toNumbers() = split(" ").filter { it.isNotEmpty() }.map { it.toLong() }
 }

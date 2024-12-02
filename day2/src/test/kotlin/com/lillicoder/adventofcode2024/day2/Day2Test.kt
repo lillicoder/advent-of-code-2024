@@ -21,14 +21,14 @@ internal class Day2Test {
     @Test
     fun part1() {
         val expected = 2L
-        val actual = day2.part1(input.lines())
+        val actual = day2.part1(input)
         assertEquals(expected, actual)
     }
 
     @Test
     fun part2() {
         val expected = 4L
-        val actual = day2.part2(input.lines())
+        val actual = day2.part2(input)
         assertEquals(expected, actual)
     }
 }
