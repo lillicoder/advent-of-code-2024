@@ -16,14 +16,12 @@
 
 package com.lillicoder.adventofcode2024.day1
 
+import com.lillicoder.adventofcode.kotlin.io.Resources
 import kotlin.math.abs
 
 fun main() {
     val day1 = Day1()
-    val input =
-        day1.javaClass.classLoader.getResourceAsStream("input.txt").use {
-            it?.reader()?.readText()
-        } ?: throw IllegalArgumentException("Could not read input.")
+    val input = Resources.text("input.txt") ?: throw IllegalArgumentException("Could not read input.")
     println("The total distance between the lists is ${day1.part1(input)}.")
     println("The similarity score for the lists is ${day1.part2(input)}.")
 }

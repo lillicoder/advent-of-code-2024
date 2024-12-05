@@ -16,14 +16,12 @@
 
 package com.lillicoder.adventofcode2024.day2
 
+import com.lillicoder.adventofcode.kotlin.io.Resources
 import kotlin.math.abs
 
 fun main() {
     val day2 = Day2()
-    val input =
-        day2.javaClass.classLoader.getResourceAsStream("input.txt").use {
-            it?.reader()?.readText()
-        } ?: throw IllegalArgumentException("Could not read input.")
+    val input = Resources.text("input.txt") ?: throw IllegalArgumentException("Could not read input.")
     println("The number of safe reports is ${day2.part1(input)}.")
     println("The number of safe reports with dampening is ${day2.part2(input)}.")
 }

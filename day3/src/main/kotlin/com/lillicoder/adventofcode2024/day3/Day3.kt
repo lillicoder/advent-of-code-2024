@@ -16,12 +16,11 @@
 
 package com.lillicoder.adventofcode2024.day3
 
+import com.lillicoder.adventofcode.kotlin.io.Resources
+
 fun main() {
     val day3 = Day3()
-    val input =
-        day3.javaClass.classLoader.getResourceAsStream("input.txt").use {
-            it?.reader()?.readText()
-        } ?: throw IllegalArgumentException("Could not read input.")
+    val input = Resources.text("input.txt") ?: throw IllegalArgumentException("Could not read input.")
     println("The sum of all multiply instruction results is ${day3.part1(input)}.")
     println("The sum of all multiply instructions w/ do()/don't() clauses is ${day3.part2(input)}.")
 }
