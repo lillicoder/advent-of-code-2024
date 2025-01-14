@@ -20,7 +20,6 @@ import com.lillicoder.adventofcode.kotlin.grids.Grid
 import com.lillicoder.adventofcode.kotlin.grids.toGrid
 import com.lillicoder.adventofcode.kotlin.io.Resources
 import com.lillicoder.adventofcode.kotlin.io.splitNotEmpty
-import com.lillicoder.adventofcode.kotlin.math.Coordinates
 import com.lillicoder.adventofcode.kotlin.math.Direction
 import com.lillicoder.adventofcode.kotlin.math.Vertex
 
@@ -112,23 +111,24 @@ class Day4 {
             wordSearch(
                 start,
                 token,
-                Direction.RIGHT_DOWN
+                Direction.RIGHT_DOWN,
             )
         val isStartMatchReversed =
             wordSearch(
                 start,
                 reversed,
-                Direction.RIGHT_DOWN
+                Direction.RIGHT_DOWN,
             )
         if (!isStartMatch && !isStartMatchReversed) return false
 
         // Check second diagonal
         val coordinates = coordinates(start)
-        val other = coordinates?.copy(
-            x = coordinates.x + (token.length - 1)
-        )?.let {
-            vertex(it)
-        }
+        val other =
+            coordinates?.copy(
+                x = coordinates.x + (token.length - 1),
+            )?.let {
+                vertex(it)
+            }
 
         if (other == null) return false
 
@@ -142,7 +142,7 @@ class Day4 {
             wordSearch(
                 other,
                 reversed,
-                Direction.LEFT_DOWN
+                Direction.LEFT_DOWN,
             )
         return isOtherMatch || isOtherMatchReversed
     }
