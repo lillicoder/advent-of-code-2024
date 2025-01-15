@@ -20,21 +20,20 @@ import com.lillicoder.adventofcode.kotlin.grids.Grid
 import com.lillicoder.adventofcode.kotlin.grids.toGrid
 import com.lillicoder.adventofcode.kotlin.io.Resources
 import com.lillicoder.adventofcode.kotlin.io.splitNotEmpty
+import com.lillicoder.adventofcode.kotlin.math.Coordinates
 import com.lillicoder.adventofcode.kotlin.math.Direction
 import com.lillicoder.adventofcode.kotlin.math.Vertex
 
 fun main() {
     val day4 = Day4()
     val input = Resources.text("input.txt") ?: throw IllegalArgumentException("Could not read input.")
-    println("The number of XMAS in the grid is ${day4.part1(input, "XMAS")}.")
-    println("The number of X-MAS in the grid is ${day4.part2(input, "MAS")}.")
+    println("The number of XMAS in the grid is ${day4.part1(input)}.")
+    println("The number of X-MAS in the grid is ${day4.part2(input)}.")
 }
 
 class Day4 {
-    fun part1(
-        input: String,
-        token: String,
-    ): Long {
+    fun part1(input: String): Long {
+        val token = "XMAS"
         val grid = input.toGrid { it.toString() }
         return grid.filter {
             token.startsWith(it.value)
@@ -43,21 +42,14 @@ class Day4 {
         }
     }
 
-    fun part2(
-        input: String,
-        token: String,
-    ): Long {
-        if (token.length % 2 == 0) {
-            throw IllegalArgumentException(
-                "Cannot make an x-search on a token with even number of characters.",
-            )
-        }
-
-        val center = token[token.length / 2].toString()
+    fun part2(input: String): Long {
+        val token = "MAS"
+        val start = token.first().toString()
+        val end = token.last().toString()
         val grid = input.toGrid { it.toString() }
         return grid.filter {
-            // Filter for the center value of the X patterns
-            center == it.value
+            // Only check vertices that start or end of the desired token
+            it.value == start || it.value == end
         }.count {
             grid.xSearch(it, token)
         }.toLong()
@@ -115,22 +107,43 @@ class Day4 {
         token: String,
         reversed: String = token.reversed(),
     ): Boolean {
-        val topLeftDiagonal =
-            neighbor(
+        // Check first diagonal
+        val isStartMatch =
+            wordSearch(
                 start,
-                Direction.LEFT_UP,
-            )?.value + start.value +
-                neighbor(
-                    start, Direction.RIGHT_DOWN,
-                )?.value
-        val topRightDiagonal =
-            neighbor(
-                start, Direction.LEFT_DOWN,
-            )?.value + start.value +
-                neighbor(
-                    start, Direction.RIGHT_UP,
-                )?.value
-        return (topLeftDiagonal == token || topLeftDiagonal == reversed) &&
-            (topRightDiagonal == token || topRightDiagonal == reversed)
+                token,
+                Direction.RIGHT_DOWN
+            )
+        val isStartMatchReversed =
+            wordSearch(
+                start,
+                reversed,
+                Direction.RIGHT_DOWN
+            )
+        if (!isStartMatch && !isStartMatchReversed) return false
+
+        // Check second diagonal
+        val coordinates = coordinates(start)
+        val other = coordinates?.copy(
+            x = coordinates.x + (token.length - 1)
+        )?.let {
+            vertex(it)
+        }
+
+        if (other == null) return false
+
+        val isOtherMatch =
+            wordSearch(
+                other,
+                token,
+                Direction.LEFT_DOWN,
+            )
+        val isOtherMatchReversed =
+            wordSearch(
+                other,
+                reversed,
+                Direction.LEFT_DOWN
+            )
+        return isOtherMatch || isOtherMatchReversed
     }
 }
