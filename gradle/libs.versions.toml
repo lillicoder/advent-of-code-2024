@@ -1,5 +1,5 @@
 [versions]
-advent-of-code = "1.5.0"
+advent-of-code = "1.8.1"
 kotlin = "1.9.21"
 
 [libraries]
