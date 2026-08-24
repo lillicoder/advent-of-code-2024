@@ -19,9 +19,9 @@ package com.lillicoder.adventofcode2024.day4
 import com.lillicoder.adventofcode.kotlin.grids.Grid
 import com.lillicoder.adventofcode.kotlin.grids.toGrid
 import com.lillicoder.adventofcode.kotlin.io.Resources
-import com.lillicoder.adventofcode.kotlin.io.splitNotEmpty
 import com.lillicoder.adventofcode.kotlin.math.Direction
 import com.lillicoder.adventofcode.kotlin.math.Vertex
+import com.lillicoder.adventofcode.kotlin.text.splitNotEmpty
 
 fun main() {
     val day4 = Day4()

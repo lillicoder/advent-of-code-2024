@@ -17,7 +17,7 @@
 package com.lillicoder.adventofcode2024.day7
 
 import com.lillicoder.adventofcode.kotlin.io.Resources
-import com.lillicoder.adventofcode.kotlin.io.splitNotEmpty
+import com.lillicoder.adventofcode.kotlin.text.splitNotEmpty
 import kotlin.math.pow
 
 fun main() {
