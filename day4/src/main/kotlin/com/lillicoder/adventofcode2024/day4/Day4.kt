@@ -34,11 +34,12 @@ class Day4 {
     fun part1(input: String): Long {
         val token = "XMAS"
         val grid = input.toGrid { it.toString() }
-        return grid.filter {
-            token.startsWith(it.value)
-        }.sumOf {
-            grid.wordSearch(it, token)
-        }
+        return grid
+            .filter {
+                token.startsWith(it.value)
+            }.sumOf {
+                grid.wordSearch(it, token)
+            }
     }
 
     fun part2(input: String): Long {
@@ -46,12 +47,13 @@ class Day4 {
         val start = token.first().toString()
         val end = token.last().toString()
         val grid = input.toGrid { it.toString() }
-        return grid.filter {
-            // Only check vertices that start or end of the desired token
-            it.value == start || it.value == end
-        }.count {
-            grid.xSearch(it, token)
-        }.toLong()
+        return grid
+            .filter {
+                // Only check vertices that start or end of the desired token
+                it.value == start || it.value == end
+            }.count {
+                grid.xSearch(it, token)
+            }.toLong()
     }
 
     /**
@@ -124,11 +126,12 @@ class Day4 {
         // Check second diagonal
         val coordinates = coordinates(start)
         val other =
-            coordinates?.copy(
-                x = coordinates.x + (token.length - 1),
-            )?.let {
-                vertex(it)
-            }
+            coordinates
+                ?.copy(
+                    x = coordinates.x + (token.length - 1),
+                )?.let {
+                    vertex(it)
+                }
 
         if (other == null) return false
 

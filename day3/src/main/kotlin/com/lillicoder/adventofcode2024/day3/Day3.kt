@@ -35,11 +35,13 @@ class Day3 {
         val segments = input.split("do()")
         return segments.sumOf { segment ->
             // Only process instructions until next don't()
-            segment.substringBefore(
-                "don\'t()",
-            ).parseMuls().sumOf {
-                it.value.mul()
-            }
+            segment
+                .substringBefore(
+                    "don\'t()",
+                ).parseMuls()
+                .sumOf {
+                    it.value.mul()
+                }
         }
     }
 

@@ -48,10 +48,12 @@ class Day1 {
      * numbers of each line.
      */
     private fun String.toLists() =
-        lines().map { line ->
-            val (first, second) = line.split(" ").filter { it.isNotEmpty() }
-            first.toLong() to second.toLong()
-        }.unzip().let {
-            it.first.sorted() to it.second.sorted()
-        }
+        lines()
+            .map { line ->
+                val (first, second) = line.split(" ").filter { it.isNotEmpty() }
+                first.toLong() to second.toLong()
+            }.unzip()
+            .let {
+                it.first.sorted() to it.second.sorted()
+            }
 }

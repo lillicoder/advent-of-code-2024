@@ -33,22 +33,28 @@ class Day8 {
         val grid = input.toGrid()
         val coordinatesByAntennae = grid.antennaClusters()
 
-        return coordinatesByAntennae.flatMap { entry ->
-            entry.value.pairOff().flatMap {
-                grid.antiNodes(it.first, it.second, 1, false)
-            }
-        }.distinct().size.toLong()
+        return coordinatesByAntennae
+            .flatMap { entry ->
+                entry.value.pairOff().flatMap {
+                    grid.antiNodes(it.first, it.second, 1, false)
+                }
+            }.distinct()
+            .size
+            .toLong()
     }
 
     fun part2(input: String): Long {
         val grid = input.toGrid()
         val coordinatesByAntennae = grid.antennaClusters()
 
-        return coordinatesByAntennae.flatMap { entry ->
-            entry.value.pairOff().flatMap {
-                grid.antiNodes(it.first, it.second)
-            }
-        }.distinct().size.toLong()
+        return coordinatesByAntennae
+            .flatMap { entry ->
+                entry.value.pairOff().flatMap {
+                    grid.antiNodes(it.first, it.second)
+                }
+            }.distinct()
+            .size
+            .toLong()
     }
 
     /**

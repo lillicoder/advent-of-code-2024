@@ -30,48 +30,52 @@ fun main() {
 class Day7 {
     fun part1(input: String): Long {
         val equations = input.lines().toEquations()
-        return equations.filterSolvable(
-            listOf(
-                "+",
-                "*",
-            ),
-        ) {
-            it.replace(
-                '0',
-                '+',
-            ).replace(
-                '1',
-                '*',
-            )
-        }.sumOf {
-            it.value
-        }
+        return equations
+            .filterSolvable(
+                listOf(
+                    "+",
+                    "*",
+                ),
+            ) {
+                it
+                    .replace(
+                        '0',
+                        '+',
+                    ).replace(
+                        '1',
+                        '*',
+                    )
+            }.sumOf {
+                it.value
+            }
     }
 
     fun part2(input: String): Long {
         // For the sake of not having to rework the character parsing,
         // I'm treating || as the same as |
         val equations = input.lines().toEquations()
-        return equations.filterSolvable(
-            listOf(
-                "+",
-                "*",
-                "|",
-            ),
-        ) {
-            it.replace(
-                '0',
-                '+',
-            ).replace(
-                '1',
-                '*',
-            ).replace(
-                '2',
-                '|',
-            )
-        }.sumOf {
-            it.value
-        }
+        return equations
+            .filterSolvable(
+                listOf(
+                    "+",
+                    "*",
+                    "|",
+                ),
+            ) {
+                it
+                    .replace(
+                        '0',
+                        '+',
+                    ).replace(
+                        '1',
+                        '*',
+                    ).replace(
+                        '2',
+                        '|',
+                    )
+            }.sumOf {
+                it.value
+            }
     }
 
     /**
@@ -92,15 +96,16 @@ class Day7 {
         transform: ((String) -> String)? = null,
     ) = filter { equation ->
         val (result, operands) = equation
-        operations.permutations(
-            operands.size - 1,
-            transform,
-        ).any {
-            result.isSolvedBy(
-                operands,
-                it.splitNotEmpty(""),
-            )
-        }
+        operations
+            .permutations(
+                operands.size - 1,
+                transform,
+            ).any {
+                result.isSolvedBy(
+                    operands,
+                    it.splitNotEmpty(""),
+                )
+            }
     }
 
     /**
@@ -112,12 +117,11 @@ class Day7 {
     private fun List<String>.permutations(
         length: Int,
         transform: ((String) -> String)? = null,
-    ): List<String> {
-        return IntRange(0, size.pow(length) - 1).map {
+    ): List<String> =
+        IntRange(0, size.pow(length) - 1).map {
             val binary = it.toString(size).padStart(length, '0')
             transform?.invoke(binary) ?: binary
         }
-    }
 
     /**
      * Converts this list of strings to an equivalent list of [Equation].
@@ -128,11 +132,12 @@ class Day7 {
             val sections = line.splitNotEmpty(":")
             Equation(
                 sections[0].toLong(),
-                sections[1].splitNotEmpty(
-                    " ",
-                ).map {
-                    it.toLong()
-                },
+                sections[1]
+                    .splitNotEmpty(
+                        " ",
+                    ).map {
+                        it.toLong()
+                    },
             )
         }
 
@@ -146,12 +151,13 @@ class Day7 {
     private fun Long.isSolvedBy(
         operands: List<Long>,
         operations: List<String>,
-    ) = operands.zip(
-        // First op will always be adding our next value to 0
-        listOf("+") + operations,
-    ).fold(0L) { accumulator, pair ->
-        pair.second.calculate(accumulator, pair.first)
-    } == this
+    ) = operands
+        .zip(
+            // First op will always be adding our next value to 0
+            listOf("+") + operations,
+        ).fold(0L) { accumulator, pair ->
+            pair.second.calculate(accumulator, pair.first)
+        } == this
 
     private fun String.calculate(
         first: Long,

@@ -31,21 +31,25 @@ class Day5 {
 
         // First section is page precedence rules
         val precedences =
-            sections[0].lines().map {
-                it.split("|")
-            }.groupBy(
-                { it.first() },
-                { it.last() },
-            )
+            sections[0]
+                .lines()
+                .map {
+                    it.split("|")
+                }.groupBy(
+                    { it.first() },
+                    { it.last() },
+                )
 
         // Second section is page orders
-        return sections[1].lines().map {
-            it.split(",")
-        }.filter {
-            it.isValidOrder(precedences)
-        }.sumOf {
-            it.middle().toLong()
-        }
+        return sections[1]
+            .lines()
+            .map {
+                it.split(",")
+            }.filter {
+                it.isValidOrder(precedences)
+            }.sumOf {
+                it.middle().toLong()
+            }
     }
 
     fun part2(input: String): Long {
@@ -53,23 +57,27 @@ class Day5 {
 
         // First section is page precedence rules
         val precedences =
-            sections[0].lines().map {
-                it.split("|")
-            }.groupBy(
-                { it.first() },
-                { it.last() },
-            )
+            sections[0]
+                .lines()
+                .map {
+                    it.split("|")
+                }.groupBy(
+                    { it.first() },
+                    { it.last() },
+                )
 
         // Second section is page orders
-        return sections[1].lines().map {
-            it.split(",")
-        }.filterNot {
-            it.isValidOrder(precedences)
-        }.map {
-            it.reorder(precedences)
-        }.sumOf {
-            it.middle().toLong()
-        }
+        return sections[1]
+            .lines()
+            .map {
+                it.split(",")
+            }.filterNot {
+                it.isValidOrder(precedences)
+            }.map {
+                it.reorder(precedences)
+            }.sumOf {
+                it.middle().toLong()
+            }
     }
 
     /**

@@ -43,25 +43,29 @@ class Day10 {
                 // Make edges only for each neighbor whose
                 // value is 1 away
                 grid.forEach { vertex ->
-                    grid.neighbors(vertex).filter {
-                        it.value - vertex.value == 1
-                    }.forEach { neighbor ->
-                        edge(
-                            sourceId = vertex.id,
-                            destinationId = neighbor.id,
-                        ) {
-                            directed()
+                    grid
+                        .neighbors(vertex)
+                        .filter {
+                            it.value - vertex.value == 1
+                        }.forEach { neighbor ->
+                            edge(
+                                sourceId = vertex.id,
+                                destinationId = neighbor.id,
+                            ) {
+                                directed()
+                            }
                         }
-                    }
                 }
             }
 
         // Graph now has directed paths for each 0-value vertex;
         // count all encounters with 9-value vertices when getting
         // all paths from the 0-value vertices
-        return graph.filter { it.value == 0 }.sumOf { vertex ->
-            DepthFirstTraversal(graph).path(vertex).count { it.value == 9 }
-        }.toLong()
+        return graph
+            .filter { it.value == 0 }
+            .sumOf { vertex ->
+                DepthFirstTraversal(graph).path(vertex).count { it.value == 9 }
+            }.toLong()
     }
 
     fun part2(input: String): Long {
@@ -76,22 +80,26 @@ class Day10 {
                 // Make edges only for each neighbor whose
                 // value is 1 away
                 grid.forEach { vertex ->
-                    grid.neighbors(vertex).filter {
-                        it.value - vertex.value == 1
-                    }.forEach { neighbor ->
-                        edge(
-                            sourceId = vertex.id,
-                            destinationId = neighbor.id,
-                        ) {
-                            directed()
+                    grid
+                        .neighbors(vertex)
+                        .filter {
+                            it.value - vertex.value == 1
+                        }.forEach { neighbor ->
+                            edge(
+                                sourceId = vertex.id,
+                                destinationId = neighbor.id,
+                            ) {
+                                directed()
+                            }
                         }
-                    }
                 }
             }
 
-        return graph.filter { it.value == 0 }.sumOf { vertex ->
-            graph.countPathsFrom(vertex) { it == 9 }
-        }.toLong()
+        return graph
+            .filter { it.value == 0 }
+            .sumOf { vertex ->
+                graph.countPathsFrom(vertex) { it == 9 }
+            }.toLong()
     }
 }
 

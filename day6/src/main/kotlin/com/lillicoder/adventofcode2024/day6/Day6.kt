@@ -33,7 +33,12 @@ class Day6 {
     fun part1(input: String): Long {
         val graph = input.gridToGraph()
         val start = graph.find { it.value == "^" }!!
-        return graph.patrol(start).map { it.vertex }.distinct().size.toLong()
+        return graph
+            .patrol(start)
+            .map { it.vertex }
+            .distinct()
+            .size
+            .toLong()
     }
 
     fun part2(input: String): Long {
@@ -41,14 +46,18 @@ class Day6 {
         val start = graph.find { it.value == "^" }!!
 
         val patrolled = graph.patrol(start)
-        return patrolled.filter {
-            graph.patrol(
-                start,
-                obstruction = it.vertex,
-            ).isCycle()
-        }.map {
-            it.vertex
-        }.distinct().size.toLong()
+        return patrolled
+            .filter {
+                graph
+                    .patrol(
+                        start,
+                        obstruction = it.vertex,
+                    ).isCycle()
+            }.map {
+                it.vertex
+            }.distinct()
+            .size
+            .toLong()
     }
 
     /**

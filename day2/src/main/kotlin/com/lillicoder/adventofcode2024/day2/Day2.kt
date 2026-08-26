@@ -32,9 +32,10 @@ class Day2 {
             input.lines().map {
                 it.toNumbers()
             }
-        return reports.count {
-            it.isValidReport()
-        }.toLong()
+        return reports
+            .count {
+                it.isValidReport()
+            }.toLong()
     }
 
     fun part2(input: String): Long {
@@ -42,9 +43,10 @@ class Day2 {
             input.lines().map {
                 it.toNumbers()
             }
-        return reports.count {
-            it.isValidReport(shouldDampen = true)
-        }.toLong()
+        return reports
+            .count {
+                it.isValidReport(shouldDampen = true)
+            }.toLong()
     }
 
     /**
@@ -75,7 +77,8 @@ class Day2 {
             when (isLowHigh) { // order check
                 true -> first <= second
                 false -> second < first
-            } && abs(first - second) in 1..3 // range check
+            } &&
+                abs(first - second) in 1..3 // range check
         }
     }
 
